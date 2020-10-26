@@ -14,7 +14,8 @@ export default {
   methods: {
     out() {
       window.sessionStorage.clear();
-      console.log(this.$router); 
+
+      this.$message.success("退出成功");
       this.$router.replace("/login");
     },
   },
