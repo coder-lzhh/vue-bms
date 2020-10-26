@@ -14,7 +14,7 @@ export default {
   methods: {
     out() {
       window.sessionStorage.clear();
-      console.log(this.$router);
+      console.log(this.$router); 
       this.$router.replace("/login");
     },
   },
