@@ -73,6 +73,7 @@
                 type="warning"
                 icon="el-icon-setting"
                 size="mini"
+                @click="setRoleOpen(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -122,6 +123,33 @@
       </span>
     </el-dialog>
 
+    <el-dialog
+      title="分配角色"
+      :visible.sync="setRoleDialogVisible"
+      width="50%"
+      @close="setRoleClosed"
+    >
+      <div>
+        <p>当前用户：{{ userinfo.username }}</p>
+        <p style="line-height: 36px">当前角色：{{ userinfo.role_name }}</p>
+        <p>
+          分配新角色：
+          <el-select v-model="selectRoleId" placeholder="请选择">
+            <el-option
+              v-for="item in rolesList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setRole">确 定 </el-button>
+      </span>
+    </el-dialog>
     <el-dialog
       title="修改用户"
       :visible.sync="editUserDialogVisible"
@@ -235,6 +263,10 @@ export default {
           },
         ],
       },
+      setRoleDialogVisible: false,
+      rolesList: {},
+      userinfo: {},
+      selectRoleId: "",
     };
   },
   created() {
@@ -320,6 +352,7 @@ export default {
         );
         if (res.meta.status !== 200) {
           this.$message.error("更新用户失败");
+          return;
         }
         this.editUserDialogVisible = false;
         this.getUserList();
@@ -351,19 +384,46 @@ export default {
           });
         });
     },
+    setRoleClosed() {
+      this.userinfo = {};
+      this.selectRoleId = "";
+    },
+    async setRoleOpen(userinfo) {
+      this.userinfo = userinfo;
+      console.log(userinfo);
+      const { data: res } = await this.$http.get("roles");
+
+      if (res.meta.status !== 200) {
+        this.$message.error("获取角色列表失败");
+        return;
+      }
+      this.rolesList = res.data;
+      console.log(this.rolesList);
+      this.setRoleDialogVisible = true;
+    },
+    async setRole() {
+      const { data: res } = await this.$http.put(
+        `users/${this.userinfo.id}/role`,
+        {
+          rid: this.selectRoleId,
+        }
+      );
+
+      if (res.meta.status !== 200) {
+        this.$message.error("分配角色失败");
+        return;
+      }
+      this.getUserList();
+      this.$message.success("分配角色成功");
+      this.setRoleDialogVisible = false;
+    },
   },
   watch: {},
 };
 </script>
 
 <style  scoped lang='less'>
-.elbreadcrumb {
+.elrow {
   margin-bottom: 15px;
-}
-.box-card {
-  box-shadow: 0 0 2px rgba(00, 00, 00, 0.1) !important;
-  .elrow {
-    margin-bottom: 15px;
-  }
 }
 </style>

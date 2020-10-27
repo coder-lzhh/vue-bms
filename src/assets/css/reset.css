@@ -224,4 +224,13 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  min-width: 1000px;
+}
+
+.box-card {
+  box-shadow: 0 0 2px rgba(00, 00, 00, 0.1) !important;
+}
+
+.elbreadcrumb {
+  margin-bottom: 15px;
 }
