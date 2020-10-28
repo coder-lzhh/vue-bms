@@ -4,6 +4,9 @@ import router from './router'
 import './assets/css/reset.css'
 import './assets/fonts/iconfont.css'
 
+import TreeTable from 'vue-table-with-tree-grid'
+Vue.component('tree-table', TreeTable)
+
 import 'element-ui/lib/theme-chalk/index.css';
 import {
   Button,
@@ -33,7 +36,8 @@ import {
   Tag,
   Tree,
   Select,
-  Option
+  Option,
+  Cascader
 } from 'element-ui';
 
 Vue.use(Button)
@@ -62,6 +66,7 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Cascader)
 
 
 Vue.prototype.$message = Message
