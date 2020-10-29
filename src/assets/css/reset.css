@@ -234,3 +234,7 @@ body,
 .elbreadcrumb {
   margin-bottom: 15px;
 }
+
+.ql-editor {
+  min-height: 300px !important;
+}
